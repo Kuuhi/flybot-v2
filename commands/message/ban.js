@@ -6,7 +6,7 @@ module.exports = {
     adminOnly: true,
     usage: '<ユーザーIDまたはメンション> [理由]', // 使い方を記述（helpで表示しないが、内部的には役立つらしい）
     async execute(client, message, args) {
-        if (!message.member.permissions.has('BAN_MEMBERS')) {
+        if (!message.member.permissions.has([PermissionsBitField.Flags.BanMembers])) {
             return message.reply({ content: 'このコマンドを実行する権限がありません！', allowedMentions: { repliedUser: false } });
         }
 
