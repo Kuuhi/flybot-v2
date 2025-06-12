@@ -1,4 +1,4 @@
-// commands/message/admincommand.js
+// commands/message/ban.js
 
 module.exports = {
     name: 'ban',
