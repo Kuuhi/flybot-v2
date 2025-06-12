@@ -1,7 +1,5 @@
 // commands/message/exit.js
 
-const { EmbedBuilder } = require('discord.js');
-
 module.exports = {
   name: 'exit',
   aliases: ['reboot'],
