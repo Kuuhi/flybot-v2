@@ -91,7 +91,7 @@ client.on(Events.MessageCreate, async (message) => {
 
             // ユーザーが指定されたロールを持っているか確認
             if (!message.member.roles.cache.has(requiredRoleId)) {
-                return message.reply({ content: "あなたの権限は不足しています", allowedMentions: { repliedUser: false } });
+                return message.reply({ content: "あなたの権限が不足しています", allowedMentions: { repliedUser: false } });
             }
         }
 
