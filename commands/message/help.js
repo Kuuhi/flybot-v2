@@ -12,18 +12,15 @@ module.exports = {
         const displayedCommands = new Set();
         const commandsList = [];
 
-        for (const [key, cmd] of client.prefixCommands) {
-            if (cmd.adminOnly) { // adminOnly が true のコマンドはスキップ
+        for (const [commandName, cmd] of client.commands) {
+            // adminOnly が true のコマンドはスキップ
+            if (cmd.adminOnly || displayedCommands.has(cmd.data.name)) {
                 continue;
             }
 
-            if (!displayedCommands.has(cmd.name)) {
-                let aliasInfo = '';
-                if (cmd.aliases && cmd.aliases.length > 0) {
-                    aliasInfo = ` (エイリアス: ${cmd.aliases.map(a => `\`${prefix}${a}\``).join(', ')})`;
-                }
-                commandsList.push(`\`${prefix}${cmd.name}\` - ${cmd.description || '説明なし'}${aliasInfo}`);
-                displayedCommands.add(cmd.name);
+            if (cmd.data && cmd.data.name === commandName) {
+                commandsList.push(`\`${prefix}${cmd.data.name}\` - ${cmd.data.description || '説明なし'}`);
+                displayedCommands.add(cmd.data.name);
             }
         }
 
