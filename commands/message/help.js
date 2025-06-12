@@ -20,7 +20,7 @@ module.exports = {
             if (!displayedCommands.has(cmd.name)) {
                 let aliasInfo = '';
                 if (cmd.aliases && cmd.aliases.length > 0) {
-                    aliasInfo = `${cmd.aliases.map(a => `\`${a}\``).join(', ')})`;
+                    aliasInfo = `(${cmd.aliases.map(a => `\`${a}\``).join(', ')})`;
                 }
                 commandsList.push(`\`${prefix}${cmd.name}\` - ${cmd.description || '説明なし'}${aliasInfo}`);
                 displayedCommands.add(cmd.name);
