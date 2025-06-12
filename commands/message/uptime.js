@@ -50,7 +50,7 @@ module.exports = {
         }
 
         await message.reply({
-            content: `${formattedStartupTime} に起動しました\n稼働時間: ${uptimeString} (<t:${seconds}:R>)`,
+            content: `${formattedStartupTime} に起動しました\n稼働時間: ${uptimeString} (<t:${Math.floor(startupTime.getTime() / 1000)}:R>)`,
             allowedMentions: { parse: [] }
         });
     },
