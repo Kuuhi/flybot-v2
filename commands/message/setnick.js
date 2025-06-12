@@ -18,6 +18,7 @@ module.exports = {
 
         try {
             await member.setNickname(args[1] ? args[1] : null, args[2]);
+            await message.react("✅")
         } catch (error) {
             console.error(error);
             message.reply({ content: "えらった！", allowedMentions: { repliedUser: false } });
