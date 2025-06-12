@@ -32,7 +32,7 @@ module.exports = {
 
         try {
             await member.ban({ reason: reason });
-            message.channel.send(`${targetUser.tag} をBANしました。\n理由: ${reason}`);
+            message.channel.send(`${targetUser.tag} をBANしました`);
         } catch (error) {
             console.error(error);
             message.reply({ content: 'メンバーのBANに失敗しました。', allowedMentions: { repliedUser: false } });
