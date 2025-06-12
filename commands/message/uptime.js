@@ -1,7 +1,7 @@
 // commands/message/uptime.js
 
 module.exports = {
-    name: 'upime',
+    name: 'uptime',
     description: 'ボットが起動した時刻と稼働時間を表示します',
     async execute(client, message) {
         if (!client.readyAt) return;
