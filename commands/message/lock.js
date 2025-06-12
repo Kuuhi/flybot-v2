@@ -2,6 +2,7 @@
 
 module.exports = {
     name: 'lock',
+    adminOnly: true,
     description: 'チャンネルをロックします',
 
     async execute(client, message) {
