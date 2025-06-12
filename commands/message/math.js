@@ -38,7 +38,7 @@ module.exports = {
             await message.reply({ content: String(result), allowedMentions: { repliedUser: false } });
         } catch (error) {
             console.error(error);
-            message.reply({ content: "えらった！", allowedMentions: { repliedUser: false } });
+            await message.react("❌")
         }
     },
 };
