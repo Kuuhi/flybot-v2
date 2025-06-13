@@ -1,7 +1,6 @@
 // commands/message/button.js
 
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const { parse } = require('mathjs');
 
 module.exports = {
     name: 'button',
@@ -11,7 +10,7 @@ module.exports = {
 
     async execute(client, message, args) {
 
-        if (!args[1]) return message.reply({ content: "button <id> <tag> [color] [channelId] [message]", allowedMentions: { parse: [] } })
+        if (!args[1]) return message.reply({ content: "因数不足```\nbutton <id> <tag> [color] [channelId] [message]```", allowedMentions: { parse: [] } })
 
         let buttonStyle = ButtonStyle.Secondary;
 
@@ -22,11 +21,6 @@ module.exports = {
                 case 'blue':
                 case 'b':
                     buttonStyle = ButtonStyle.Primary;
-                    break;
-                case 'secondary':
-                case 'grey':
-                case 'g':
-                    buttonStyle = ButtonStyle.Secondary;
                     break;
                 case 'success':
                 case 'green':
