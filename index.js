@@ -111,4 +111,179 @@ client.on(Events.MessageCreate, async (message) => {
     }
 });
 
+// スラッシュコマンドの読み込み
+client.slashCommands = new Collection();
+const slashCommandsPath = path.join(__dirname, 'commands', 'interaction', 'slash');
+const slashCommandFiles = fs.readdirSync(slashCommandsPath).filter(file => file.endsWith('.js'));
+
+for (const file of slashCommandFiles) {
+    const filePath = path.join(slashCommandsPath, file);
+    const command = require(filePath);
+    if ('data' in command && 'execute' in command) {
+        client.slashCommands.set(command.data.name, command);
+    } else {
+        console.warn(`[WARNING] The slash command at ${filePath} is missing a required "data" or "execute" property.`);
+    }
+}
+
+// ボタンインタラクションの読み込み
+client.buttonCommands = new Collection();
+const buttonCommandsPath = path.join(__dirname, 'commands', 'interaction', 'button');
+const buttonCommandFiles = fs.readdirSync(buttonCommandsPath).filter(file => file.endsWith('.js'));
+
+for (const file of buttonCommandFiles) {
+    const filePath = path.join(buttonCommandsPath, file);
+    const command = require(filePath);
+    if ('customId' in command && 'execute' in command) {
+        client.buttonCommands.set(command.customId, command);
+    } else {
+        console.warn(`[WARNING] The button command at ${filePath} is missing a required "customId" or "execute" property.`);
+    }
+}
+
+// セレクトメニューインタラクションの読み込み
+client.selectMenuCommands = new Collection();
+const selectMenuCommandsPath = path.join(__dirname, 'commands', 'interaction', 'selectmenu');
+const selectMenuCommandFiles = fs.readdirSync(selectMenuCommandsPath).filter(file => file.endsWith('.js'));
+
+for (const file of selectMenuCommandFiles) {
+    const filePath = path.join(selectMenuCommandsPath, file);
+    const command = require(filePath);
+    if ('customId' in command && 'execute' in command) {
+        client.selectMenuCommands.set(command.customId, command);
+    } else {
+        console.warn(`[WARNING] The select menu command at ${filePath} is missing a required "customId" or "execute" property.`);
+    }
+}
+
+// モーダルインタラクションの読み込み
+client.modalCommands = new Collection();
+const modalCommandsPath = path.join(__dirname, 'commands', 'interaction', 'modal');
+const modalCommandFiles = fs.readdirSync(modalCommandsPath).filter(file => file.endsWith('.js'));
+
+for (const file of modalCommandFiles) {
+    const filePath = path.join(modalCommandsPath, file);
+    const command = require(filePath);
+    if ('customId' in command && 'execute' in command) {
+        client.modalCommands.set(command.customId, command);
+    } else {
+        console.warn(`[WARNING] The modal command at ${filePath} is missing a required "customId" or "execute" property.`);
+    }
+}
+
+// インタラクションの処理
+client.on(Events.InteractionCreate, async interaction => {
+    if (interaction.isChatInputCommand()) {
+        const command = client.slashCommands.get(interaction.commandName);
+
+        if (!command) {
+            console.error(`No command matching ${interaction.commandName} was found.`);
+            return;
+        }
+
+        // 管理者専用コマンドの権限チェック (スラッシュコマンド版)
+        if (command.adminOnly) {
+            const requiredRoleId = process.env.ADMIN_ROLE_ID;
+            if (!interaction.member.roles.cache.has(requiredRoleId)) {
+                return interaction.reply({ content: "あなたの権限が不足しています", ephemeral: true });
+            }
+        }
+
+        try {
+            await command.execute(interaction);
+        } catch (error) {
+            console.error(error);
+            if (interaction.replied || interaction.deferred) {
+                await interaction.followUp({ content: 'コマンドの実行中にエラーが発生しました！', ephemeral: true });
+            } else {
+                await interaction.reply({ content: 'コマンドの実行中にエラーが発生しました！', ephemeral: true });
+            }
+        }
+    } else if (interaction.isButton()) {
+        // customIdを_で区切った最初の部分をコマンド名として扱う
+        const commandName = interaction.customId.split('_')[0];
+        const command = client.buttonCommands.get(commandName);
+
+        if (!command) {
+            console.error(`No button command matching ${commandName} was found.`);
+            return;
+        }
+
+        // 管理者専用ボタンの権限チェック
+        if (command.adminOnly) {
+            const requiredRoleId = process.env.ADMIN_ROLE_ID;
+            if (!interaction.member.roles.cache.has(requiredRoleId)) {
+                return interaction.reply({ content: "あなたの権限が不足しています", ephemeral: true });
+            }
+        }
+
+        try {
+            await command.execute(interaction);
+        } catch (error) {
+            console.error(error);
+            if (interaction.replied || interaction.deferred) {
+                await interaction.followUp({ content: 'ボタンの処理中にエラーが発生しました！', ephemeral: true });
+            } else {
+                await interaction.reply({ content: 'ボタンの処理中にエラーが発生しました！', ephemeral: true });
+            }
+        }
+    } else if (interaction.isStringSelectMenu()) {
+        // customIdを_で区切った最初の部分をコマンド名として扱う
+        const commandName = interaction.customId.split('_')[0];
+        const command = client.selectMenuCommands.get(commandName);
+
+        if (!command) {
+            console.error(`No select menu command matching ${commandName} was found.`);
+            return;
+        }
+
+        // 管理者専用セレクトメニューの権限チェック
+        if (command.adminOnly) {
+            const requiredRoleId = process.env.ADMIN_ROLE_ID;
+            if (!interaction.member.roles.cache.has(requiredRoleId)) {
+                return interaction.reply({ content: "あなたの権限が不足しています", ephemeral: true });
+            }
+        }
+
+        try {
+            await command.execute(interaction);
+        } catch (error) {
+            console.error(error);
+            if (interaction.replied || interaction.deferred) {
+                await interaction.followUp({ content: 'セレクトメニューの処理中にエラーが発生しました！', ephemeral: true });
+            } else {
+                await interaction.reply({ content: 'セレクトメニューの処理中にエラーが発生しました！', ephemeral: true });
+            }
+        }
+    } else if (interaction.isModalSubmit()) {
+        // customIdを_で区切った最初の部分をコマンド名として扱う
+        const commandName = interaction.customId.split('_')[0];
+        const command = client.modalCommands.get(commandName);
+
+        if (!command) {
+            console.error(`No modal command matching ${commandName} was found.`);
+            return;
+        }
+
+        // 管理者専用モーダルの権限チェック
+        if (command.adminOnly) {
+            const requiredRoleId = process.env.ADMIN_ROLE_ID;
+            if (!interaction.member.roles.cache.has(requiredRoleId)) {
+                return interaction.reply({ content: "あなたの権限が不足しています", ephemeral: true });
+            }
+        }
+
+        try {
+            await command.execute(interaction);
+        } catch (error) {
+            console.error(error);
+            if (interaction.replied || interaction.deferred) {
+                await interaction.followUp({ content: 'モーダルの処理中にエラーが発生しました！', ephemeral: true });
+            } else {
+                await interaction.reply({ content: 'モーダルの処理中にエラーが発生しました！', ephemeral: true });
+            }
+        }
+    }
+});
+
 client.login(process.env.BOT_TOKEN);
