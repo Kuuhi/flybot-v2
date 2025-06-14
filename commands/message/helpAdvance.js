@@ -4,7 +4,7 @@ const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
     name: 'helpAdvance',
-    aliases: ['?+','help_Advance','help_advance', 'help+'],
+    aliases: ['?+', 'help_Advance', 'help_advance', 'help+'],
     description: '利用可能なコマンドのリストを表示します。',
     async execute(client, message, args) {
         const prefix = process.env.PREFIX || '!';
@@ -13,14 +13,16 @@ module.exports = {
         const commandsList = [];
 
         for (const [key, cmd] of client.prefixCommands) {
-            if (!displayedCommands.has(cmd.name) && cmd.adminOnly) {
-                commandsList.push(`\`${prefix}${cmd.name}\` - (管理者のみ)${cmd.description || '説明なし'}`);
-                displayedCommands.add(cmd.name);
-            }
-
             if (!displayedCommands.has(cmd.name)) {
-                commandsList.push(`\`${prefix}${cmd.name}\` - ${cmd.description || '説明なし'}`);
-                displayedCommands.add(cmd.name);
+
+                if (cmd.adminOnly) {
+                    commandsList.push(`\`${prefix}${cmd.name}\` - (管理者のみ)${cmd.description || '説明なし'}`);
+                    displayedCommands.add(cmd.name);
+                } else {
+                    commandsList.push(`\`${prefix}${cmd.name}\` - ${cmd.description || '説明なし'}`);
+                    displayedCommands.add(cmd.name);
+                }
+
             }
         }
 
