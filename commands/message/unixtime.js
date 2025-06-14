@@ -14,7 +14,7 @@ module.exports = {
             message.reply({ content: String(unix), allowedMentions: { parse: [] } })
         } catch (error) {
             console.error(error);
-            message.reply({ content: "えらった！", allowedMentions: { repliedUser: false } });
+            message.reply({ content: "えらった！", allowedMentions: { parse: [] } });
         }
     },
 };
