@@ -13,7 +13,7 @@ module.exports = {
         const commandsList = [];
 
         for (const [key, cmd] of client.prefixCommands) {
-            if (cmd.adminOnly) {
+            if (!displayedCommands.has(cmd.name) && cmd.adminOnly) {
                 commandsList.push(`\`${prefix}${cmd.name}\` - (管理者のみ)${cmd.description || '説明なし'}`);
                 displayedCommands.add(cmd.name);
             }
