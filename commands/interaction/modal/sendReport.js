@@ -24,7 +24,7 @@ module.exports = {
                 )
 
             await reportChannel.send({ embeds: [reportEmbed] });
-            await interaction.reply({ content: '送信されました', ephemeral: true });
+            await interaction.reply({ content: '送信しました', ephemeral: true });
 
         } catch (error) {
             console.error(error);

@@ -13,7 +13,8 @@ module.exports = {
         const titleInput = new TextInputBuilder()
             .setCustomId('titleInput')
             .setLabel("件名")
-            .setStyle(TextInputStyle.Short);
+            .setStyle(TextInputStyle.Short)
+            .setRequired(false);
         const textInput = new TextInputBuilder()
             .setCustomId('textInput')
             .setLabel("本文")
