@@ -20,10 +20,6 @@ module.exports = {
             return message.reply({ content: 'このサーバーにそのユーザーはいません。', allowedMentions: { repliedUser: false } });
         }
 
-        if (member.id === message.author.id) {
-            return message.reply({ content: '自分自身をBANすることはできません。', allowedMentions: { repliedUser: false } });
-        }
-
         if (member.roles.highest.position >= message.member.roles.highest.position && message.author.id !== message.guild.ownerId) {
             return message.reply({ content: '自分と同等かそれ以上のロールを持つメンバーをBANすることはできません。', allowedMentions: { repliedUser: false } });
         }
