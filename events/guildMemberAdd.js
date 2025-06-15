@@ -21,6 +21,7 @@ module.exports = {
 
         try {
             await channel.send({ embeds: [embed] });
+            await member.roles.add("875969584996446260")
         } catch (error) {
             console.error(error);
         }
