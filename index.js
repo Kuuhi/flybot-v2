@@ -36,6 +36,13 @@ require('dotenv').config();
 const fs = require('node:fs');
 const path = require('node:path');
 
+const sqlite3 = require("sqlite3");
+
+const db = new sqlite3.Database("./database.db");
+
+db.run("create table if not exists members(userId,exp,coin)");
+
+
 // --- イベントの読み込みと登録 ---
 const eventsPath = path.join(__dirname, 'events');
 const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
