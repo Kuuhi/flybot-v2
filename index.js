@@ -192,7 +192,7 @@ client.on(Events.InteractionCreate, async interaction => {
         if (command.adminOnly) {
             const requiredRoleId = process.env.ADMIN_ROLE_ID;
             if (!interaction.member.roles.cache.has(requiredRoleId)) {
-                return interaction.reply({ content: "あなたの権限が不足しています", ephemeral: true });
+                return interaction.reply({ content: "あなたの権限が不足しています", flags: MessageFlags.EPHEMERAL });
             }
         }
 
@@ -201,9 +201,9 @@ client.on(Events.InteractionCreate, async interaction => {
         } catch (error) {
             console.error(error);
             if (interaction.replied || interaction.deferred) {
-                await interaction.followUp({ content: 'コマンドの実行中にエラーが発生しました！', ephemeral: true });
+                await interaction.followUp({ content: 'えらった！', flags: MessageFlags.EPHEMERAL });
             } else {
-                await interaction.reply({ content: 'コマンドの実行中にエラーが発生しました！', ephemeral: true });
+                await interaction.reply({ content: 'えらった！', flags: MessageFlags.EPHEMERAL });
             }
         }
     } else if (interaction.isButton()) {
@@ -220,7 +220,7 @@ client.on(Events.InteractionCreate, async interaction => {
         if (command.adminOnly) {
             const requiredRoleId = process.env.ADMIN_ROLE_ID;
             if (!interaction.member.roles.cache.has(requiredRoleId)) {
-                return interaction.reply({ content: "あなたの権限が不足しています", ephemeral: true });
+                return interaction.reply({ content: "あなたの権限が不足しています", flags: MessageFlags.EPHEMERAL });
             }
         }
 
@@ -229,9 +229,9 @@ client.on(Events.InteractionCreate, async interaction => {
         } catch (error) {
             console.error(error);
             if (interaction.replied || interaction.deferred) {
-                await interaction.followUp({ content: 'ボタンの処理中にエラーが発生しました！', ephemeral: true });
+                await interaction.followUp({ content: 'えらった！', flags: MessageFlags.EPHEMERAL });
             } else {
-                await interaction.reply({ content: 'ボタンの処理中にエラーが発生しました！', ephemeral: true });
+                await interaction.reply({ content: 'えらった！', flags: MessageFlags.EPHEMERAL });
             }
         }
     } else if (interaction.isStringSelectMenu()) {
@@ -248,7 +248,7 @@ client.on(Events.InteractionCreate, async interaction => {
         if (command.adminOnly) {
             const requiredRoleId = process.env.ADMIN_ROLE_ID;
             if (!interaction.member.roles.cache.has(requiredRoleId)) {
-                return interaction.reply({ content: "あなたの権限が不足しています", ephemeral: true });
+                return interaction.reply({ content: "あなたの権限が不足しています", flags: MessageFlags.EPHEMERAL });
             }
         }
 
@@ -257,9 +257,9 @@ client.on(Events.InteractionCreate, async interaction => {
         } catch (error) {
             console.error(error);
             if (interaction.replied || interaction.deferred) {
-                await interaction.followUp({ content: 'セレクトメニューの処理中にエラーが発生しました！', ephemeral: true });
+                await interaction.followUp({ content: 'えらった！', flags: MessageFlags.EPHEMERAL });
             } else {
-                await interaction.reply({ content: 'セレクトメニューの処理中にエラーが発生しました！', ephemeral: true });
+                await interaction.reply({ content: 'えらった！', flags: MessageFlags.EPHEMERAL });
             }
         }
     } else if (interaction.isModalSubmit()) {
@@ -276,7 +276,7 @@ client.on(Events.InteractionCreate, async interaction => {
         if (command.adminOnly) {
             const requiredRoleId = process.env.ADMIN_ROLE_ID;
             if (!interaction.member.roles.cache.has(requiredRoleId)) {
-                return interaction.reply({ content: "あなたの権限が不足しています", ephemeral: true });
+                return interaction.reply({ content: "あなたの権限が不足しています", flags: MessageFlags.EPHEMERAL });
             }
         }
 
@@ -285,9 +285,9 @@ client.on(Events.InteractionCreate, async interaction => {
         } catch (error) {
             console.error(error);
             if (interaction.replied || interaction.deferred) {
-                await interaction.followUp({ content: 'モーダルの処理中にエラーが発生しました！', ephemeral: true });
+                await interaction.followUp({ content: 'えらった！', flags: MessageFlags.EPHEMERAL });
             } else {
-                await interaction.reply({ content: 'モーダルの処理中にエラーが発生しました！', ephemeral: true });
+                await interaction.reply({ content: 'えらった！', flags: MessageFlags.EPHEMERAL });
             }
         }
     }
