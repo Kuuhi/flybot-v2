@@ -29,9 +29,9 @@ module.exports = {
         } catch (error) {
             console.error(error);
             if (interaction.replied || interaction.deferred) {
-                await interaction.followUp({ content: 'えらった！', ephemeral: true });
+                await interaction.followUp({ content: 'えらった！', flags: 64 });
             } else {
-                await interaction.reply({ content: 'えらった！', ephemeral: true });
+                await interaction.reply({ content: 'えらった！', flags: 64 });
             }
         }
     },
