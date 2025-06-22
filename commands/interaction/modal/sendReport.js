@@ -24,14 +24,14 @@ module.exports = {
                 )
 
             await reportChannel.send({ embeds: [reportEmbed] });
-            await interaction.reply({ content: '送信しました', flags: MessageFlags.EPHEMERAL });
+            await interaction.reply({ content: '送信しました', flags: 64 });
 
         } catch (error) {
             console.error(error);
             if (interaction.replied || interaction.deferred) {
-                await interaction.followUp({ content: 'えらった！', flags: MessageFlags.EPHEMERAL });
+                await interaction.followUp({ content: 'えらった！', flags: 64 });
             } else {
-                await interaction.reply({ content: 'えらった！', flags: MessageFlags.EPHEMERAL });
+                await interaction.reply({ content: 'えらった！', flags: 64 });
             }
         }
     },
