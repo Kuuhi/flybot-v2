@@ -1,4 +1,5 @@
-const { Client, GatewayIntentBits, Partials, EmbedBuilder, Collection, Events } = require('discord.js');
+const { Client, GatewayIntentBits, Partials, EmbedBuilder, Collection, Events, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
+const { arg } = require('mathjs');
 
 const client = new Client({
     intents: [
@@ -42,6 +43,31 @@ const db = new sqlite3.Database("./database.db");
 
 db.run("create table if not exists members(userId,exp,coin)");
 
+process.on("uncaughtException", async (error) => {
+    const errorMessage = error.message || error;
+
+    const embed = new EmbedBuilder()
+        .setColor(0x00FF00)
+        .setTitle("エラー通知(未確認)")
+        .setDescription(errorMessage)
+        .setFooter({ text: new Date().toDateString() });
+    const buttonA = new ButtonBuilder()
+        .setCustomId("errorNotice_delete")
+        .setLabel("削除")
+        .setStyle(ButtonStyle.Danger);
+    const buttonB = new ButtonBuilder()
+        .setCustomId("errorNotice_hold")
+        .setLabel("保留")
+        .setStyle(ButtonStyle.Secondary);
+    const buttonC = new ButtonBuilder()
+        .setCustomId("errorNotice_resolution")
+        .setLabel("解決")
+        .setStyle(ButtonStyle.Success);
+    const row = new ActionRowBuilder().addComponents(buttonA, buttonB, buttonC);
+
+    await client.channels.cache.get("1386302548910149692")
+        .send({ embeds: [embed], components: [row] });
+});
 
 // --- イベントの読み込みと登録 ---
 const eventsPath = path.join(__dirname, 'events');
@@ -192,7 +218,7 @@ client.on(Events.InteractionCreate, async interaction => {
         if (command.adminOnly) {
             const requiredRoleId = process.env.ADMIN_ROLE_ID;
             if (!interaction.member.roles.cache.has(requiredRoleId)) {
-                return interaction.reply({ content: "あなたの権限が不足しています", flags: MessageFlags.EPHEMERAL });
+                return interaction.reply({ content: "あなたの権限が不足しています", flags: 64 });
             }
         }
 
@@ -201,14 +227,16 @@ client.on(Events.InteractionCreate, async interaction => {
         } catch (error) {
             console.error(error);
             if (interaction.replied || interaction.deferred) {
-                await interaction.followUp({ content: 'えらった！', flags: MessageFlags.EPHEMERAL });
+                await interaction.followUp({ content: 'えらった！', flags: 64 });
             } else {
-                await interaction.reply({ content: 'えらった！', flags: MessageFlags.EPHEMERAL });
+                await interaction.reply({ content: 'えらった！', flags: 64 });
             }
         }
     } else if (interaction.isButton()) {
-        // customIdを_で区切った最初の部分をコマンド名として扱う
-        const commandName = interaction.customId.split('_')[0];
+        // customIdを最初の'_'で分割し、コマンド名と引数文字列を取得
+        const customIdParts = interaction.customId.split('_', 2);
+
+        const commandName = customIdParts[0]; // コマンド名
         const command = client.buttonCommands.get(commandName);
 
         if (!command) {
@@ -216,22 +244,28 @@ client.on(Events.InteractionCreate, async interaction => {
             return;
         }
 
+        // 引数部分を抽出し、'_'で分割して配列にする
+        let args = [];
+        if (customIdParts.length > 1) {
+            args = customIdParts[1].split('_'); // 2番目の要素（引数文字列）を'_'で分割
+        }
+
         // 管理者専用ボタンの権限チェック
         if (command.adminOnly) {
             const requiredRoleId = process.env.ADMIN_ROLE_ID;
             if (!interaction.member.roles.cache.has(requiredRoleId)) {
-                return interaction.reply({ content: "あなたの権限が不足しています", flags: MessageFlags.EPHEMERAL });
+                return interaction.reply({ content: "あなたの権限が不足しています", flags: 64 });
             }
         }
 
         try {
-            await command.execute(interaction);
+            await command.execute(interaction, args);
         } catch (error) {
             console.error(error);
             if (interaction.replied || interaction.deferred) {
-                await interaction.followUp({ content: 'えらった！', flags: MessageFlags.EPHEMERAL });
+                await interaction.followUp({ content: 'えらった！', flags: 64 });
             } else {
-                await interaction.reply({ content: 'えらった！', flags: MessageFlags.EPHEMERAL });
+                await interaction.reply({ content: 'えらった！', flags: 64 });
             }
         }
     } else if (interaction.isStringSelectMenu()) {
@@ -248,7 +282,7 @@ client.on(Events.InteractionCreate, async interaction => {
         if (command.adminOnly) {
             const requiredRoleId = process.env.ADMIN_ROLE_ID;
             if (!interaction.member.roles.cache.has(requiredRoleId)) {
-                return interaction.reply({ content: "あなたの権限が不足しています", flags: MessageFlags.EPHEMERAL });
+                return interaction.reply({ content: "あなたの権限が不足しています", flags: 64 });
             }
         }
 
@@ -257,9 +291,9 @@ client.on(Events.InteractionCreate, async interaction => {
         } catch (error) {
             console.error(error);
             if (interaction.replied || interaction.deferred) {
-                await interaction.followUp({ content: 'えらった！', flags: MessageFlags.EPHEMERAL });
+                await interaction.followUp({ content: 'えらった！', flags: 64 });
             } else {
-                await interaction.reply({ content: 'えらった！', flags: MessageFlags.EPHEMERAL });
+                await interaction.reply({ content: 'えらった！', flags: 64 });
             }
         }
     } else if (interaction.isModalSubmit()) {
@@ -276,7 +310,7 @@ client.on(Events.InteractionCreate, async interaction => {
         if (command.adminOnly) {
             const requiredRoleId = process.env.ADMIN_ROLE_ID;
             if (!interaction.member.roles.cache.has(requiredRoleId)) {
-                return interaction.reply({ content: "あなたの権限が不足しています", flags: MessageFlags.EPHEMERAL });
+                return interaction.reply({ content: "あなたの権限が不足しています", flags: 64 });
             }
         }
 
@@ -285,9 +319,9 @@ client.on(Events.InteractionCreate, async interaction => {
         } catch (error) {
             console.error(error);
             if (interaction.replied || interaction.deferred) {
-                await interaction.followUp({ content: 'えらった！', flags: MessageFlags.EPHEMERAL });
+                await interaction.followUp({ content: 'えらった！', flags: 64 });
             } else {
-                await interaction.reply({ content: 'えらった！', flags: MessageFlags.EPHEMERAL });
+                await interaction.reply({ content: 'えらった！', flags: 64 });
             }
         }
     }
