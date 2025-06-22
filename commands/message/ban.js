@@ -15,13 +15,9 @@ module.exports = {
             return message.reply({ content: 'BANするユーザーを指定してください。', allowedMentions: { repliedUser: false } });
         }
 
-        if (member.roles.highest.position >= message.member.roles.highest.position && message.author.id !== message.guild.ownerId) {
-            return message.reply({ content: '自分と同等かそれ以上のロールを持つメンバーをBANすることはできません。', allowedMentions: { repliedUser: false } });
-        }
-
         const reason = args.slice(1).join(' ') || '理由が指定されていません。';
 
-            await member.ban({ reason: reason });
-            message.channel.send(`${targetUser.tag} をBANしました`);
+        await member.ban({ reason: reason });
+        message.channel.send(`${targetUser.tag} をBANしました`);
     },
 };
