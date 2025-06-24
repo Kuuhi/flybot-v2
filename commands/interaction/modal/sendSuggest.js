@@ -48,5 +48,17 @@ module.exports = {
         );
         await interaction.reply({ content: "提案が作成されました！\n" + msg.url, flags: 64 });
 
+        // log
+        const logChannel = await interaction.client.channels.fetch(process.env.LOG_CHANNEL_ID);
+
+        const logEmbed = new EmbedBuilder()
+            .setColor(0x0099FF)
+            .setTitle('新しい提案が作成されました')
+            .setDescription(`提案者: ${interaction.user.tag}\nタイトル: ${title || 'タイトルなし'}\n内容: ${text}`)
+            .setFooter({ text: `提案ID: ${interaction.member.name}のリクエスト` });
+
+        await logChannel.send({
+            embeds: [logEmbed]
+        });
     },
 };
