@@ -5,7 +5,6 @@ const { EmbedBuilder } = require('discord.js');
 module.exports = {
     name: 'user',
     description: '',
-    adminOnly: true,
     aliases: ['userInfo', 'ui', 'userinfo'],
     usage: '',
 
