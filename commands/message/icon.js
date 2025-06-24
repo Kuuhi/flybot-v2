@@ -13,11 +13,11 @@ module.exports = {
         const targetUser = message.mentions.users.first() || await client.users.fetch(args[0]).catch(() => null);
 
         if (!targetUser) {
-            return message.reply({ content: 'kickするユーザーを指定してください', allowedMentions: { repliedUser: false } });
+            return message.reply({ content: 'ユーザーを指定してください', allowedMentions: { repliedUser: false } });
         }
 
         if (!targetUser.displayAvatarURL()) {
-            return message.reply({ content: 'そのユーザーはアイコンを設定していません   ', allowedMentions: { repliedUser: false } });
+            return message.reply({ content: 'そのユーザーはアイコンを設定していません', allowedMentions: { repliedUser: false } });
         }
 
         const embed = new EmbedBuilder()
