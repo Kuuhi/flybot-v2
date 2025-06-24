@@ -1,7 +1,8 @@
 // commands/message/setnick.js
 
 module.exports = {
-    name: 'setnick',
+    name: 'setNick',
+    aliases: ['setnick', 'nickname', 'nick', 'sn'],
     description: '指定したメンバーのニックネームを変更します',
     adminOnly: true,
     usage: 'setnick <ユーザー> [新しいニックネーム]',
