@@ -4,19 +4,16 @@ const { ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 
 module.exports = {
   name: 'top',
+  aliases: ['first'],
+  adminOnly: false,
   description: 'チャンネルの一番上の方にメッセージを取得',
 
-  async execute(client, message, args) {
+  async execute(client, message) {
 
     const fetchedMessages = await message.channel.messages.fetch({ after: '0', limit: 1 });
 
-    if (!message.guild) {
-      return message.reply({ content: 'このコマンドはサーバー内でのみ使用できます', allowedMentions: { repliedUser: false } });
-    }
-
-    if (fetchedMessages.size === 0) {
-      return message.reply({ content: 'このチャンネルにはまだメッセージがありません', allowedMentions: { repliedUser: false } });
-    }
+    if (!message.guild) return
+    if (fetchedMessages.size === 0) return
 
     const firstMessage = fetchedMessages.first();
 
