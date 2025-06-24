@@ -28,8 +28,6 @@ module.exports = {
                 return interaction.reply({ content: '投票済みです！', flags: 64 });
             }
 
-            const isVotingActive = String(date.isVotingActive).toLowerCase() === 'true';
-
             if (args[0] === 'agree') {
                 if (!isVotingActive) {
                     return interaction.reply({ content: '投票は終了しています。', ephemeral: true });
@@ -57,7 +55,8 @@ module.exports = {
                 .addFields(
                     { name: '賛成', value: `${agreeCount} - (${agreePercentage.toFixed(2)}%)`, inline: true },
                     { name: '反対', value: `${disagreeCount} - (${disagreePercentage.toFixed(2)}%)`, inline: true },
-                );
+                )
+                .setFooter({ text: '*複垢での投票は禁止です' });
 
             const buttonA = new ButtonBuilder()
                 .setCustomId(`suggestButton_agree`)
@@ -77,11 +76,6 @@ module.exports = {
                 .then(() => {
                     db.run(`UPDATE suggestion SET agree = ?, disagree = ? WHERE url = ?`,
                         [JSON.stringify(date.agree), JSON.stringify(date.disagree), interaction.message.url],
-                        (updateErr) => {
-                            if (updateErr) {
-                                console.error("データベース更新エラー:", updateErr);
-                            }
-                        }
                     );
                     interaction.reply({ content: '投票が完了しました', ephemeral: true });
                 })
