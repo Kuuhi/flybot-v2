@@ -13,8 +13,7 @@ module.exports = {
         const title = interaction.fields.getTextInputValue('titleInput');
         const text = interaction.fields.getTextInputValue('textInput');
 
-        const SUGGEST_CHANNEL_ID = "929114861944856647";
-        const channel = await interaction.client.channels.fetch(SUGGEST_CHANNEL_ID);
+        const channel = await interaction.client.channels.fetch(process.env.SUGGEST_CHANNEL_ID);
 
         const embed = new EmbedBuilder()
             .setColor(0x0099FF)
