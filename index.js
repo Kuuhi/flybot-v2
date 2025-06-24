@@ -41,10 +41,19 @@ const sqlite3 = require("sqlite3");
 
 const db = new sqlite3.Database("./database.db");
 
-db.run("create table if not exists members(userId,exp,coin)");
+db.run(
+    "CREATE TABLE IF NOT EXISTS members(userId ,exp,coin)"
+);
+
+db.run(
+    `CREATE TABLE IF NOT EXISTS suggestion(url VARCHAR,isVotingActive BOOL,agree INTEGER,disagree INTEGER)`
+);
+
 
 process.on("uncaughtException", async (error) => {
     const errorMessage = error.message || error;
+
+    console.error(error);
 
     const embed = new EmbedBuilder()
         .setColor(0x00FF00)
@@ -66,7 +75,7 @@ process.on("uncaughtException", async (error) => {
     const row = new ActionRowBuilder().addComponents(buttonA, buttonB, buttonC);
 
     await client.channels.cache.get("1386302548910149692")
-        .send({ embeds: [embed], components: [row] });
+    ?.send({ embeds: [embed], components: [row] });
 });
 
 // --- イベントの読み込みと登録 ---
