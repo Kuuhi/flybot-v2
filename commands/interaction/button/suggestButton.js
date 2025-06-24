@@ -23,18 +23,19 @@ module.exports = {
 
             date.agree = JSON.parse(date.agree || '[]');
             date.disagree = JSON.parse(date.disagree || '[]');
+            
 
             if (date.agree.includes(interaction.user.id) || date.disagree.includes(interaction.user.id)) {
                 return interaction.reply({ content: '投票済みです！', flags: 64 });
             }
 
             if (args[0] === 'agree') {
-                if (!isVotingActive) {
+                if (!date.isVotingActive) {
                     return interaction.reply({ content: '投票は終了しています。', ephemeral: true });
                 }
                 date.agree.push(interaction.user.id);
             } else if (args[0] === 'disagree') {
-                if (!isVotingActive) {
+                if (!date.isVotingActive) {
                     return interaction.reply({ content: '投票は終了しています。', flags: 64 });
                 }
                 date.disagree.push(interaction.user.id);
