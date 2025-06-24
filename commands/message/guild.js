@@ -5,7 +5,6 @@ const { EmbedBuilder } = require('discord.js');
 module.exports = {
     name: 'guild',
     description: '',
-    adminOnly: true,
     aliases: ['guildInfo', 'gi', 'guildinfo', 'server', 'serverInfo', 'si', 'serverinfo'],
     usage: '',
 
@@ -13,9 +12,7 @@ module.exports = {
 
         const guild = message.guild;
         
-        if (!guild) {
-            return message.reply({ content: 'このコマンドはサーバー内でのみ使用できます', allowedMentions: { repliedUser: false } });
-        }
+        if (!guild) return
 
         const embed = new EmbedBuilder()
             .setColor(0x0099FF)
