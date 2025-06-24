@@ -1,4 +1,4 @@
-// commands/message/setnick.js
+// commands/message/setNick.js
 
 module.exports = {
     name: 'setNick',
@@ -17,12 +17,7 @@ module.exports = {
             return message.reply({ content: 'ユーザーが見つかりません', allowedMentions: { repliedUser: false } });
         }
 
-        try {
-            await member.setNickname(args[1] ? args[1] : null, args[2]);
-            await message.react("✅")
-        } catch (error) {
-            console.error(error);
-            message.reply({ content: "えらった！", allowedMentions: { repliedUser: false } });
-        }
+        await member.setNickname(args[1] ? args[1] : null, args[2]);
+        await message.react("✅")
     },
 };
