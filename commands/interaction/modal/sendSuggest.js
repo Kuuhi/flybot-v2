@@ -25,6 +25,7 @@ module.exports = {
                 { name: '賛成', value: '0 - (-%)', inline: true },
                 { name: '反対', value: '0 - (-%)', inline: true },
             )
+            .setFooter({ text: '*複垢での投票は禁止です' });
 
         const buttonA = new ButtonBuilder()
             .setCustomId(`suggestButton_agree`)
@@ -45,7 +46,7 @@ module.exports = {
             `INSERT INTO suggestion(url, isVotingActive, agree, disagree) VALUES (?, ?, ?, ?)`,
             [msg.url, 'true', JSON.stringify([]), JSON.stringify([])]
         );
-        await interaction.reply({ content: '送信しました', flags: 64 });
+        await interaction.reply({ content: "提案が作成されました！\n" + msg.url, flags: 64 });
 
     },
 };
