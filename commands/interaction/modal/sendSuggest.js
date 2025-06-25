@@ -56,7 +56,7 @@ module.exports = {
         const logEmbed = new EmbedBuilder()
             .setColor(0x0099FF)
             .setTitle('新しい提案が作成されました')
-            .setDescription(`**提案者:** ${interaction.user.tag}\n**タイトル:** ${title || 'タイトルなし'}\n**内容:** ${text}`)
+            .setDescription(`**提案者ID:** ${interaction.user.id}\n**タイトル:** ${title || 'タイトルなし'}\n**内容:** ${text}`)
             .setFooter({ text: `${interaction.member ? interaction.member.displayName : interaction.user.username}のリクエスト`, iconURL: interaction.user.displayAvatarURL() });
 
             await logChannel.send({ embeds: [logEmbed] });
