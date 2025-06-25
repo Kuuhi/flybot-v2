@@ -4,7 +4,7 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 
 module.exports = {
     name: 'button',
-    description: 'buttonを生成(管理者)',
+    description: 'buttonを生成',
     adminOnly: true,
     usage: 'button <id> <tag> [color] [channelId] [message]',
 
@@ -48,15 +48,10 @@ module.exports = {
 
         const channel = args[3] ? client.channels.cache.get(args[3]) : message.channel;
 
-        try {
-            await channel.send({
-                content: args[4] || null,
-                components: [row],
-            });
-            await message.react("✅");
-        } catch (error) {
-            console.error(error);
-            message.reply({ content: "エラーが発生しました！", allowedMentions: { repliedUser: false } });
-        }
+        await channel.send({
+            content: args[4] || null,
+            components: [row],
+        });
+        await message.react("✅");
     },
 };
