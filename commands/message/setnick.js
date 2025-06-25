@@ -6,7 +6,13 @@ module.exports = {
     description: '指定したメンバーのニックネームを変更します',
     adminOnly: true,
     usage: 'setnick <ユーザー> [新しいニックネーム]',
+
     async execute(client, message, args) {
+
+        if (!message.guild) {
+            return message.reply({ content: 'このコマンドはサーバー内でのみ使用できます', allowedMentions: { repliedUser: false } });
+        }
+        
         const targetUser = message.mentions.users.first() || await client.users.fetch(args[0]).catch(() => null);
         if (!targetUser) {
             return message.reply({ content: 'ユーザーが指定されていません', allowedMentions: { repliedUser: false } });
