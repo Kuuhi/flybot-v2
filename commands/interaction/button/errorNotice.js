@@ -5,8 +5,10 @@ const { EmbedBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require('
 module.exports = {
     customId: 'errorNotice',
     description: '',
+    adminOnly: true,
 
     async execute(interaction, args) {
+
         if (args[0] === "delete") {
             interaction.message.delete();
         }
@@ -71,5 +73,6 @@ module.exports = {
             });
             interaction.deferUpdate();
         }
+        
     },
 };
