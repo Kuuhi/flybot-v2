@@ -20,6 +20,15 @@ module.exports = {
             return message.reply({ content: 'サーバーにそのユーザーはいません', allowedMentions: { repliedUser: false } });
         }
 
+        if (args[1] == 0) {
+            if (member.isCommunicationDisabled()) {
+                await member.timeout(null);
+                return message.channel.send(`${targetUser.tag} のタイムアウトを解除しました`);
+            } else {
+                return message.reply({ content: 'そのユーザーは現在タイムアウトされていません', allowedMentions: { repliedUser: false } });
+            }
+        } 
+
         function parseDuration(durationString) {
             const match = durationString.match(/^(\d+)([smhdwMy])$/);
 
