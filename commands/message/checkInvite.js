@@ -4,7 +4,7 @@ const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
   name: 'checkInvite',
-  aliases: ['ci','ii','infoInvite','infoinvite',checkinvite'],
+  aliases: ['ci','ii','infoInvite','infoinvite','checkinvite'],
   description: 'あとでかく',
 
   async execute(client, message, args) {
