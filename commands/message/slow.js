@@ -6,11 +6,9 @@ module.exports = {
     usage: '[チャンネルIDまたはメンション] <期間>',
 
     async execute(client, message, args) {
-        const targetChannel;
-        const durationString;
 
         // チャンネル指定があるかチェック
-        const firstArgIsChannel = message.mentions.channels.first() || await client.channels.fetch(args[0]).catch(() => null);
+        const firstArgIsChannel = message.mentions.channels.first() || await client.channels.fetch(args[0]).catch(() => null)
 
         if (firstArgIsChannel && firstArgIsChannel.type === 0) { // GUILD_TEXT
             targetChannel = firstArgIsChannel;
