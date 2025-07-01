@@ -76,7 +76,7 @@ process.on("uncaughtException", async (error) => {
     const row = new ActionRowBuilder().addComponents(buttonA, buttonB, buttonC);
 
     await client.channels.cache.get("1386302548910149692")
-    ?.send({ embeds: [embed], components: [row] });
+        ?.send({ embeds: [embed], components: [row] });
 });
 
 // --- イベントの読み込みと登録 ---
