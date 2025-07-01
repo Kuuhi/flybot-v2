@@ -1,5 +1,4 @@
 const { Client, GatewayIntentBits, Partials, EmbedBuilder, Collection, Events, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
-const { arg } = require('mathjs');
 
 const client = new Client({
     intents: [
@@ -36,6 +35,8 @@ require('dotenv').config();
 
 const fs = require('node:fs');
 const path = require('node:path');
+
+const math = require("mathjs");
 
 const sqlite3 = require("sqlite3");
 
