@@ -50,6 +50,22 @@ db.run(
     `CREATE TABLE IF NOT EXISTS suggestion(url VARCHAR,isVotingActive BOOL,agree INTEGER,disagree INTEGER)`
 );
 
+db.run(
+    `
+    CREATE TABLE IF NOT EXISTS wiki(
+    uuid TEXT PRIMARY KEY,
+    createAt INTEGER,
+    title TEXT,
+    content TEXT,
+    imageURL TEXT,
+    authorId TEXT,
+    tags TEXT,
+    branch TEXT,
+    isTip INTEGER,
+    private INTEGER
+    )`
+);
+
 
 process.on("uncaughtException", async (error) => {
     const errorMessage = error.message || error;
