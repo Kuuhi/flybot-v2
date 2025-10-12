@@ -10,6 +10,7 @@ module.exports = {
     description: '',
 
     async execute(interaction, args) {
+        
         if (args[0] === 'delete') {
             if (!interaction.member.roles.cache.has(process.env.ADMIN_ROLE_ID)) {
                 return interaction.reply({ content: 'このボタンは管理者のみが使用できます', flags: 64 });
@@ -18,12 +19,24 @@ module.exports = {
             await interaction.message.delete();
             return interaction.reply({ content: '提案を削除しました。', flags: 64 });
         }
+        db.get(`SELECT * FROM suggestion WHERE url LIKE ?`, interaction.message.url, (err, date) => {
+            if (err) {
+                return interaction.reply({ content: 'データベースエラーが発生しました。', ephemeral: true });
+            }
+            if (!date) {
+                return interaction.reply({ content: '提案データが見つかりません。', ephemeral: true });
+            }
+
+            date.agree = JSON.parse(date.agree || '[]');
+            date.disagree = JSON.parse(date.disagree || '[]');
+
+        });
 
         db.get(`SELECT * FROM suggestion WHERE url LIKE ?`, interaction.message.url, (err, date) => {
 
             date.agree = JSON.parse(date.agree || '[]');
             date.disagree = JSON.parse(date.disagree || '[]');
-            
+
 
             if (date.agree.includes(interaction.user.id) || date.disagree.includes(interaction.user.id)) {
                 return interaction.reply({ content: '投票済みです！', flags: 64 });
