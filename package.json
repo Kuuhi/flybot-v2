@@ -1,7 +1,9 @@
 {
   "dependencies": {
+    "better-sqlite3": "^12.4.1",
     "discord.js": "^14.22.1",
     "dotenv": "^16.5.0",
+    "fuse.js": "^7.1.0",
     "mathjs": "^14.5.2",
     "node-cron": "^4.1.0",
     "sqlite3": "^5.1.7"
