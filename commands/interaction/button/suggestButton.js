@@ -9,7 +9,7 @@ module.exports = {
     customId: 'suggestButton',
     description: '',
 
-    async execute(interaction, args) {
+    async execute(client, interaction, args) {
         
         if (args[0] === 'delete') {
             if (!interaction.member.roles.cache.has(process.env.ADMIN_ROLE_ID)) {

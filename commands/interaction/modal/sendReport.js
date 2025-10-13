@@ -6,7 +6,7 @@ module.exports = {
     customId: 'sendReport',
     description: 'reportのmodal処理',
 
-    async execute(interaction) {
+    async execute(client, interaction) {
         const title = interaction.fields.getTextInputValue('titleInput');
         const text = interaction.fields.getTextInputValue('textInput');
         const user = interaction.user;

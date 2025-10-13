@@ -9,7 +9,7 @@ module.exports = {
     customId: 'sendSuggest',
     description: 'suggestのmodal処理',
 
-    async execute(interaction) {
+    async execute(client, interaction) {
         const title = interaction.fields.getTextInputValue('titleInput');
         const text = interaction.fields.getTextInputValue('textInput');
 

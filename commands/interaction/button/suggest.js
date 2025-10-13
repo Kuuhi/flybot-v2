@@ -6,7 +6,7 @@ module.exports = {
     customId: 'suggest',
     description: '',
 
-    async execute(interaction) {
+    async execute(client, interaction) {
         const modal = new ModalBuilder()
             .setCustomId('sendSuggest')
             .setTitle('提案');

@@ -7,7 +7,7 @@ module.exports = {
     description: '',
     adminOnly: true,
 
-    async execute(interaction, args) {
+    async execute(client, interaction, args) {
 
         if (args[0] === "delete") {
             interaction.message.delete();

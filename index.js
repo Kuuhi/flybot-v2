@@ -62,7 +62,7 @@ db.run(
     tags TEXT,
     branch TEXT,
     isTip INTEGER,
-    private INTEGER
+    closed INTEGER
     )`
 );
 
@@ -285,7 +285,7 @@ client.on(Events.InteractionCreate, async interaction => {
         }
 
         try {
-            await command.execute(interaction, args);
+            await command.execute(client, interaction, args);
         } catch (error) {
             console.error(error);
             if (interaction.replied || interaction.deferred) {
@@ -327,6 +327,8 @@ client.on(Events.InteractionCreate, async interaction => {
         const commandName = interaction.customId.split('_')[0];
         const command = client.modalCommands.get(commandName);
 
+        const args = interaction.customId.split('_').slice(1);
+
         if (!command) {
             console.error(`No modal command matching ${commandName} was found.`);
             return;
@@ -341,7 +343,7 @@ client.on(Events.InteractionCreate, async interaction => {
         }
 
         try {
-            await command.execute(interaction);
+            await command.execute(client, interaction, args);
         } catch (error) {
             console.error(error);
             if (interaction.replied || interaction.deferred) {

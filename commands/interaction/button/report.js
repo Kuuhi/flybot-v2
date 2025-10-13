@@ -6,7 +6,7 @@ module.exports = {
     customId: 'report',
     description: 'BOT管理者とFLY鯖管理者にreportを送信するモーダルを表示します。',
 
-    async execute(interaction) {
+    async execute(client, interaction) {
         const modal = new ModalBuilder()
             .setCustomId('sendReport')
             .setTitle('レポート');
