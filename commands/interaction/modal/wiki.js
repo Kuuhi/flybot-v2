@@ -23,6 +23,7 @@ module.exports = {
             const authorId = interaction.user.id;
             const uuid = crypto.randomUUID();
             const createAt = Math.floor(Date.now() / 1000);
+            const updatedAt = createAt; // 作成時はcreateAtと同じ値を入れる
             const branch = [];
             const isTip = 1;
             const closed = 0;
@@ -30,8 +31,9 @@ module.exports = {
             const existing = db.prepare('SELECT * FROM wiki WHERE title = ?').get(title);
             if (existing) return await interaction.reply({ content: "同じタイトルのページがすでに存在します", ephemeral: true });
 
-            const stmt = db.prepare('INSERT INTO wiki (uuid, title, content, imageURL, tags, authorId, createAt, branch, isTip, closed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
-            stmt.run(uuid, title, content, imageURL, JSON.stringify(tagsArray), authorId, createAt, JSON.stringify(branch), isTip, closed);
+            // updatedAtもINSERTに含める
+            const stmt = db.prepare('INSERT INTO wiki (uuid, title, content, imageURL, tags, authorId, createAt, updatedAt, branch, isTip, closed) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+            stmt.run(uuid, title, content, imageURL, JSON.stringify(tagsArray), authorId, createAt, updatedAt, JSON.stringify(branch), isTip, closed);
 
             return await interaction.reply({ content: "ページを作成しました！", ephemeral: true });
         } else if (args[0] === "search") {
