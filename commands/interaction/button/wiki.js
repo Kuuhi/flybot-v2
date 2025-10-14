@@ -69,6 +69,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor(0x0099FF)
                 .setTitle(random.title)
+                .setAuthor({ name: 'ランダム表示' })
                 .setDescription(random.content)
                 .setImage(random.imageURL || null)
 
