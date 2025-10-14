@@ -55,6 +55,7 @@ db.run(
     CREATE TABLE IF NOT EXISTS wiki(
     uuid TEXT PRIMARY KEY,
     createAt INTEGER,
+    updatedAt INTEGER,
     title TEXT,
     content TEXT,
     imageURL TEXT,
@@ -260,9 +261,8 @@ client.on(Events.InteractionCreate, async interaction => {
         }
     } else if (interaction.isButton()) {
         // customIdを最初の'_'で分割し、コマンド名と引数文字列を取得
-        const customIdParts = interaction.customId.split('_', 2);
-
-        const commandName = customIdParts[0]; // コマンド名
+        const customIdParts = interaction.customId.split('_');
+        const commandName = customIdParts[0];
         const command = client.buttonCommands.get(commandName);
 
         if (!command) {
@@ -270,11 +270,8 @@ client.on(Events.InteractionCreate, async interaction => {
             return;
         }
 
-        // 引数部分を抽出し、'_'で分割して配列にする
-        let args = [];
-        if (customIdParts.length > 1) {
-            args = customIdParts[1].split('_'); // 2番目の要素（引数文字列）を'_'で分割
-        }
+        const args = customIdParts.slice(1);
+
 
         // 管理者専用ボタンの権限チェック
         if (command.adminOnly) {
@@ -296,13 +293,16 @@ client.on(Events.InteractionCreate, async interaction => {
         }
     } else if (interaction.isStringSelectMenu()) {
         // customIdを_で区切った最初の部分をコマンド名として扱う
-        const commandName = interaction.customId.split('_')[0];
+        const customIdParts = interaction.customId.split('_');
+        const commandName = customIdParts[0];
         const command = client.selectMenuCommands.get(commandName);
 
         if (!command) {
             console.error(`No select menu command matching ${commandName} was found.`);
             return;
         }
+
+        const args = customIdParts.slice(1);
 
         // 管理者専用セレクトメニューの権限チェック
         if (command.adminOnly) {
@@ -313,7 +313,7 @@ client.on(Events.InteractionCreate, async interaction => {
         }
 
         try {
-            await command.execute(interaction);
+            await command.execute(client, interaction, args);
         } catch (error) {
             console.error(error);
             if (interaction.replied || interaction.deferred) {
