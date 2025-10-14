@@ -21,7 +21,7 @@ module.exports = {
             .setAuthor({ name: targetUser.tag, iconURL: targetUser.displayAvatarURL({ size: 1024, dynamic: true }), url: 'https://discord.com/users/' + targetUser.id })
             .setDescription(`
                 ID: ${targetUser.id}
-                username: ${targetUser.username}
+                userName: ${targetUser.username}
                 globalName: ${targetUser.globalName || '-'}
                 bot: ${targetUser.bot ? 'はい' : 'いいえ'}
                 アカウント作成: <t:${Math.floor(targetUser.createdTimestamp / 1000)}:F>
