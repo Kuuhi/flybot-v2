@@ -1,6 +1,6 @@
 // events/profanityFilter.js
 
-const { Events } = require('discord.js');
+const { Events, EmbedBuilder } = require('discord.js');
 const Database = require("better-sqlite3");
 const db = new Database("./database.db");
 
@@ -31,6 +31,26 @@ module.exports = {
                 const regex = new RegExp(`\\b${escapedWord}\\b`, 'i');
 
                 if (regex.test(message.content)) {
+
+                    const logChannelId = process.env.LOG_CHANNEL_ID;
+                    const logChannel = message.guild.channels.cache.get(logChannelId);
+
+                    if (logChannel) {
+                        const embed = new EmbedBuilder()
+                            .setColor(0xFF0000)
+                            .setTitle('禁止用語の検出')
+                            .addFields(
+                                { name: 'ユーザー', value: `${message.author.tag} (<@${message.author.id}>)`, inline: true },
+                                { name: 'チャンネル', value: `<#${message.channel.id}>`, inline: true },
+                                { name: 'メッセージ内容', value: message.content },
+                                { name: '対象ワード', value: word },
+                                { name: '自動措置', value: deleteMessage ? 'メッセージ削除' : 'なし' }
+                            )
+                            .setTimestamp();
+
+                        await logChannel.send({ embeds: [embed] });
+                    }
+
                     if (deleteMessage) {
                         await message.delete();
                         console.log(`Deleted message containing banned word: ${word}`);
