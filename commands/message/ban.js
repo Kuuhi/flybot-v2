@@ -20,7 +20,7 @@ module.exports = {
 
         const reason = args.slice(1).join(' ') || '理由が指定されていません。';
 
-        await member.ban({ reason: reason });
+        await targetUser.ban({ reason: reason });
         message.channel.send(`${targetUser.tag} をBANしました`);
     },
 };
