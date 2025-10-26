@@ -1,10 +1,13 @@
 // commands/message/ban.js
 
+const { PermissionsBitField } = require('discord.js');
+
 module.exports = {
     name: 'ban',
     description: '指定したメンバーをBANします。',
     adminOnly: true,
-    usage: '<ユーザーIDまたはメンション> [理由]', // 使い方を記述（helpで表示しないが、内部的には役立つらしい）
+    usage: '<ユーザーIDまたはメンション> [理由]',
+    
     async execute(client, message, args) {
         if (!message.member.permissions.has([PermissionsBitField.Flags.BanMembers])) {
             return message.reply({ content: 'このコマンドを実行する権限がありません！', allowedMentions: { repliedUser: false } });
