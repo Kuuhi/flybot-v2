@@ -41,39 +41,6 @@ const math = require("mathjs");
 const Database = require("better-sqlite3");
 const db = new Database("./database.db");
 
-db.run(
-    "CREATE TABLE IF NOT EXISTS members(userId ,exp,coin)"
-);
-
-db.run(
-    `CREATE TABLE IF NOT EXISTS suggestion(url VARCHAR,isVotingActive BOOL,agree INTEGER,disagree INTEGER)`
-);
-
-db.run(
-    `
-    CREATE TABLE IF NOT EXISTS wiki(
-    uuid TEXT PRIMARY KEY,
-    createAt INTEGER,
-    updatedAt INTEGER,
-    title TEXT,
-    content TEXT,
-    imageURL TEXT,
-    authorId TEXT,
-    tags TEXT,
-    branch TEXT,
-    isTip INTEGER,
-    closed INTEGER
-    )`
-);
-
-db.run(
-    `
-    CREATE TABLE IF NOT EXISTS BANNED_WORDS(
-    word TEXT PRIMARY KEY,
-    counter INTEGER,
-    deleteMessage INTEGER
-    )`
-);
 
 // membersテーブル
 db.prepare(`
