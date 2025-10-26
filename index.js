@@ -38,7 +38,7 @@ const path = require('node:path');
 
 const math = require("mathjs");
 
-const sqlite3 = require("sqlite3");
+const sqlite3 = require("better-sqlite3");
 
 const db = new sqlite3.Database("./database.db");
 
@@ -64,6 +64,15 @@ db.run(
     branch TEXT,
     isTip INTEGER,
     closed INTEGER
+    )`
+);
+
+db.run(
+    `
+    CREATE TABLE IF NOT EXISTS BANNED_WORDS(
+    word TEXT PRIMARY KEY,
+    counter INTEGER,
+    deleteMessage INTEGER
     )`
 );
 
