@@ -5,6 +5,7 @@ const db = new Database("./database.db");
 
 module.exports = {
     name: 'addBannedWord',
+    aliases: ['addNgWord', "addng"],
     description: 'NGワードを追加します。',
     adminOnly: true,
     usage: '<NGワード> [deleteMessage (true/false)]',

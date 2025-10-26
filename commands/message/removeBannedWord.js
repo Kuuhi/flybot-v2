@@ -5,6 +5,7 @@ const db = new Database("./database.db");
 
 module.exports = {
     name: 'removeBannedWord',
+    aliases: ['removeNgWord', "removeng", "delng"],
     description: 'NGワードを削除します。',
     adminOnly: true,
     usage: '<NGワード>',
