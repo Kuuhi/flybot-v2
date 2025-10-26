@@ -75,6 +75,51 @@ db.run(
     )`
 );
 
+// membersテーブル
+db.prepare(`
+    CREATE TABLE IF NOT EXISTS members (
+        userId TEXT PRIMARY KEY,
+        exp INTEGER DEFAULT 0,
+        coin INTEGER DEFAULT 0
+    )
+`).run();
+
+// suggestionテーブル
+db.prepare(`
+    CREATE TABLE IF NOT EXISTS suggestion (
+        url TEXT PRIMARY KEY,
+        isVotingActive INTEGER DEFAULT 1,
+        agree INTEGER DEFAULT 0,
+        disagree INTEGER DEFAULT 0
+    )
+`).run();
+
+// wikiテーブル
+db.prepare(`
+    CREATE TABLE IF NOT EXISTS wiki (
+        uuid TEXT PRIMARY KEY,
+        createAt INTEGER NOT NULL,
+        updatedAt INTEGER NOT NULL,
+        title TEXT NOT NULL,
+        content TEXT,
+        imageURL TEXT,
+        authorId TEXT NOT NULL,
+        tags TEXT,
+        branch TEXT,
+        isTip INTEGER DEFAULT 1,
+        closed INTEGER DEFAULT 0
+    )
+`).run();
+
+// BANNED_WORDSテーブル
+db.prepare(`
+    CREATE TABLE IF NOT EXISTS BANNED_WORDS (
+        word TEXT PRIMARY KEY,
+        counter INTEGER DEFAULT 0,
+        deleteMessage INTEGER DEFAULT 0
+    )
+`).run();
+
 
 process.on("uncaughtException", async (error) => {
     const errorMessage = error.message || error;
