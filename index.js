@@ -38,9 +38,8 @@ const path = require('node:path');
 
 const math = require("mathjs");
 
-const sqlite3 = require("better-sqlite3");
-
-const db = new sqlite3.Database("./database.db");
+const Database = require("better-sqlite3");
+const db = new Database("./database.db");
 
 db.run(
     "CREATE TABLE IF NOT EXISTS members(userId ,exp,coin)"
