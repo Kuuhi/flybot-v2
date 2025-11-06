@@ -44,7 +44,6 @@ module.exports = {
 
             return await message.reply({ embeds: [embed], components: [row], allowedMentions: { repliedUser: false } });
 
-            return;
         } else if (cmd[1] === "create") {
 
             const button = new ButtonBuilder()
