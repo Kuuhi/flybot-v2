@@ -88,6 +88,17 @@ db.prepare(`
 `).run();
 
 
+// message_countsテーブル（年別メッセージ数）
+db.prepare(`
+    CREATE TABLE IF NOT EXISTS message_counts (
+        userId TEXT NOT NULL,
+        guildId TEXT NOT NULL,
+        year INTEGER NOT NULL,
+        count INTEGER DEFAULT 0,
+        PRIMARY KEY (userId, guildId, year)
+    )
+`).run();
+
 process.on("uncaughtException", async (error) => {
     const errorMessage = error.message || error;
 
