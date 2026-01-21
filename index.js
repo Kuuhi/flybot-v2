@@ -61,6 +61,17 @@ db.prepare(`
     )
 `).run();
 
+// pollsテーブル
+db.prepare(`
+    CREATE TABLE IF NOT EXISTS polls (
+        url TEXT PRIMARY KEY,
+        question TEXT,
+        options TEXT,   -- JSON配列
+        votes TEXT,     -- JSONオブジェクト
+        isVotingActive TEXT
+    )
+`).run();
+
 // wikiテーブル
 db.prepare(`
     CREATE TABLE IF NOT EXISTS wiki (
