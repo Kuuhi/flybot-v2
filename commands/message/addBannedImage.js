@@ -15,7 +15,7 @@ const getHash = (url) => {
 
 module.exports = {
     name: 'addBannedImage',
-    aliases: ['addSpamImage', "addspam"],
+    aliases: ['addSpamImage', "addngi"],
     description: 'スパム画像/URLを追加/削除します。サブコマンド: add/remove。添付画像は自動でハッシュ化して登録します。',
     adminOnly: true,
     usage: '<add|remove> [url|hash] <value>',
