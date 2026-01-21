@@ -98,6 +98,15 @@ db.prepare(`
     )
 `).run();
 
+// spam_assetsテーブル
+db.prepare(`
+    CREATE TABLE IF NOT EXISTS spam_assets (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        type TEXT NOT NULL, -- 'hash' または 'url'
+        value TEXT UNIQUE NOT NULL
+    )
+`).run();
+
 
 // message_countsテーブル（年別メッセージ数）
 db.prepare(`
