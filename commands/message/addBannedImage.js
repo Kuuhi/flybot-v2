@@ -41,7 +41,7 @@ module.exports = {
                     db.prepare('INSERT OR IGNORE INTO spam_assets (type, value) VALUES (?, ?)').run(inferredType, maybeValue);
                 }
 
-                // 添付画像があればハッシュ化して登録
+                // 現在のメッセージの添付画像があればハッシュ化して登録
                 if (message.attachments && message.attachments.size > 0) {
                     for (const attachment of message.attachments.values()) {
                         try {
@@ -50,6 +50,25 @@ module.exports = {
                         } catch (err) {
                             console.error('画像ハッシュ作成エラー:', err);
                         }
+                    }
+                }
+
+                // 返信先のメッセージがあれば、その添付画像もハッシュ化して登録
+                if (message.reference) {
+                    try {
+                        const repliedTo = await message.channel.messages.fetch(message.reference.messageId);
+                        if (repliedTo.attachments && repliedTo.attachments.size > 0) {
+                            for (const attachment of repliedTo.attachments.values()) {
+                                try {
+                                    const hash = await getHash(attachment.url);
+                                    db.prepare('INSERT OR IGNORE INTO spam_assets (type, value) VALUES (?, ?)').run('hash', hash);
+                                } catch (err) {
+                                    console.error('返信先の画像ハッシュ作成エラー:', err);
+                                }
+                            }
+                        }
+                    } catch (err) {
+                        console.error('返信先メッセージ取得エラー:', err);
                     }
                 }
 
