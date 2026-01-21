@@ -42,6 +42,14 @@ module.exports = {
                 .setLabel("削除(管理者)")
                 .setStyle(ButtonStyle.Secondary)
         );
+        
+        // 管理者用終了ボタン
+        adminRow.addComponents(
+            new ButtonBuilder()
+                .setCustomId(`pollButton_end`)
+                .setLabel("終了(管理者)")
+                .setStyle(ButtonStyle.Danger)
+        );
 
         const msg = await channel.send({ embeds: [embed], components: [row, adminRow] });
 
@@ -54,7 +62,6 @@ module.exports = {
 
         // ログ
         const logChannel = await interaction.client.channels.fetch(process.env.LOG_CHANNEL_ID);
-
         if (logChannel) {
             const logEmbed = new EmbedBuilder()
                 .setColor(0x00FF99)

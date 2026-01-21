@@ -9,8 +9,8 @@ module.exports = {
     description: 'アンケートボタンの処理',
 
     async execute(client, interaction) {
-        const customId = interaction.customId; // 'pollButton_0' など
-        const action = customId.split('_')[1]; // '0', '1', 'delete' を取得
+        const customId = interaction.customId;
+        const action = customId.split('_')[1]; // '0', '1', 'delete', 'end'
 
         if (action === 'delete') {
             if (!interaction.member.roles.cache.has(process.env.ADMIN_ROLE_ID)) {
@@ -18,6 +18,15 @@ module.exports = {
             }
             await interaction.message.delete();
             return interaction.reply({ content: 'アンケートを削除しました。', flags: 64 });
+        }
+
+        if (action === 'end') {
+            if (!interaction.member.roles.cache.has(process.env.ADMIN_ROLE_ID)) {
+                return interaction.reply({ content: '管理権限が必要です。', flags: 64 });
+            }
+            
+            await interaction.message.edit({ components: [] });
+            return interaction.reply({ content: 'アンケートを終了しました。', flags: 64 });
         }
 
         db.get(`SELECT * FROM polls WHERE url = ?`, [interaction.message.url], async (err, row) => {
@@ -50,7 +59,7 @@ module.exports = {
             options.forEach((opt, idx) => {
                 const count = counts[idx];
                 const percentage = totalVotes > 0 ? ((count / totalVotes) * 100).toFixed(1) : 0;
-                embed.addFields({ name: opt, value: `${count}票 (${percentage}%)`, inline: true });
+                embed.addFields({ name: opt, value: `${count}票 (${percentage}%)`, inline: false });
             });
 
             await interaction.message.edit({ embeds: [embed] });
