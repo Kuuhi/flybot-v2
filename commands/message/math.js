@@ -19,7 +19,7 @@ function mathEvaluate(expression) {
 module.exports = {
     name: 'math',
     description: '数式を計算・評価します。詳しくは[ここ(外部リンク)](https://mathjs.org/)',
-    aliases: ['calc'],
+    aliases: ['calc', '=?', '?='],
 
     async execute(client, message, args) {
         const expression = args.join(' ').trim();
