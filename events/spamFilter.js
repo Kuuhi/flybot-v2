@@ -74,7 +74,8 @@ module.exports = {
                                 isSpam = true;
                                 spamReason = 'スパム画像検出';
                                 spamDistance = distance;
-                                spamDetail = attachment.name || attachment.url;
+                                const fullDetail = attachment.name || attachment.url;
+                                spamDetail = fullDetail.length > 100 ? fullDetail.substring(0, 100) + '...' : fullDetail;
                                 break;
                             }
                         }

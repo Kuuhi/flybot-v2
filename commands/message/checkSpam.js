@@ -49,7 +49,8 @@ module.exports = {
             const row = db.prepare('SELECT value FROM spam_assets WHERE type = ? AND value IN (' + urls.map(() => '?').join(',') + ')').get('url', ...urls);
             if (row) {
                 foundSpam = true;
-                reportLines.push(`URL \`${row.value}\` はスパムリストに登録されています。`);
+                const shortUrl = row.value.length > 100 ? row.value.substring(0, 100) + '...' : row.value;
+                reportLines.push(`URL \`${shortUrl}\` はスパムリストに登録されています。`);
             } else {
                 reportLines.push(`付属URL: spam登録なし`);
             }
@@ -71,15 +72,18 @@ module.exports = {
                     if (dist < bestDist) bestDist = dist;
                     if (dist <= THRESHOLD) {
                         foundSpam = true;
-                        reportLines.push(`画像 \`${attachment.url}\` はスパム画像に一致 (距離 ${dist})`);
+                        const shortUrl = attachment.url.length > 100 ? attachment.url.substring(0, 100) + '...' : attachment.url;
+                        reportLines.push(`画像 \`${shortUrl}\` はスパム画像に一致 (距離 ${dist})`);
                         break;
                     }
                 }
                 if (!foundSpam) {
-                    reportLines.push(`画像 \`${attachment.url}\` はスパムではありません (最短距離 ${bestDist})`);
+                    const shortUrl = attachment.url.length > 100 ? attachment.url.substring(0, 100) + '...' : attachment.url;
+                    reportLines.push(`画像 \`${shortUrl}\` はスパムではありません (最短距離 ${bestDist})`);
                 }
             } catch (e) {
-                reportLines.push(`画像 \`${attachment.url}\` のハッシュ計算中にエラー: ${e.message}`);
+                const shortUrl = attachment.url.length > 100 ? attachment.url.substring(0, 100) + '...' : attachment.url;
+                reportLines.push(`画像 \`${shortUrl}\` のハッシュ計算中にエラー: ${e.message}`);
             }
         }
 
