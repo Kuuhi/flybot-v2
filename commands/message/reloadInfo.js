@@ -40,8 +40,8 @@ module.exports = {
                 const embed = new EmbedBuilder()
                     .setColor(0x0099FF)
                     .setAuthor({ name: guild.name + " ステータス", iconURL: guild.iconURL() })
-                    .setDescription(`メンバー数: ${guild.memberCount}\n<@&${roleId}>: ${role ? role.members.size : "取得失敗"}\nメッセージ/時: **${avg}** msg/h\n-# ⌞直近30日のメッセージ数/30*24`)
-                    .setFooter({ text: `最終更新 (手動): ${new Date().toLocaleString('ja-JP')}` });
+                    .setDescription(`メンバー数: ${guild.memberCount}\n<@&${roleId}>: ${role ? role.members.size : "取得失敗"}\nメッセージ/時: ${avg} msg/h\n-# ⌞直近30日のメッセージ数/30*24`)
+                    .setFooter({ text: `最終更新: ${new Date().toLocaleString('ja-JP')}` });
 
                 await fetchedMessage.edit({ content: "", embeds: [embed], components: [] });
 
