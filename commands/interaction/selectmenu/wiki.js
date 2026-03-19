@@ -11,8 +11,8 @@ module.exports = {
 
     async execute(client, interaction, args) {
 
-        if (args[0] === "select") {
-            const uuid = interaction.values[0]
+        if (args[0] === "select" || args[0] === "branch") {
+            const uuid = interaction.values[0];
             const wiki = db.prepare('SELECT * FROM wiki WHERE uuid = ?').get(uuid);
             if (!wiki) return await interaction.reply({ content: "該当するページが見つかりませんでした。", ephemeral: true });
 
@@ -35,12 +35,13 @@ module.exports = {
                 embed.setFooter({ text: tags.join("|") });
             }
 
-            const button = new ButtonBuilder()
-                .setLabel('Ⲷ')
-                .setCustomId(`wiki_advance_${wiki.uuid}`)
-                .setStyle(ButtonStyle.Success);
-            const row = new ActionRowBuilder().addComponents(button);
+            const actionButtons = [];
+            actionButtons.push(new ButtonBuilder().setLabel('Ⲷ').setCustomId(`wiki_advance_${wiki.uuid}`).setStyle(ButtonStyle.Success));
+            actionButtons.push(new ButtonBuilder().setLabel('編集').setCustomId(`wiki_edit_${wiki.uuid}`).setStyle(ButtonStyle.Primary));
+            actionButtons.push(new ButtonBuilder().setLabel('複製して新規作成').setCustomId(`wiki_clone_${wiki.uuid}`).setStyle(ButtonStyle.Secondary));
+            actionButtons.push(new ButtonBuilder().setLabel('報告').setCustomId(`wiki_report_${wiki.uuid}`).setStyle(ButtonStyle.Danger));
 
+            const row = new ActionRowBuilder().addComponents(actionButtons);
             return await interaction.update({ embeds: [embed], components: [row] });
         }
     }

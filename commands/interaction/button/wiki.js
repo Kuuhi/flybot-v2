@@ -1,6 +1,6 @@
 // commands/interaction/button/wiki.js
 
-const { EmbedBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputStyle, TextInputBuilder, ActionRowBuilder } = require('discord.js');
+const { EmbedBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, StringSelectMenuBuilder, TextInputStyle, TextInputBuilder, ActionRowBuilder } = require('discord.js');
 const Database = require("better-sqlite3");
 const db = new Database("./database.db");
 
@@ -106,7 +106,11 @@ module.exports = {
                 .setLabel('報告')
                 .setCustomId(`wiki_report_${page.uuid}`)
                 .setStyle(ButtonStyle.Danger);
-            const row = new ActionRowBuilder().addComponents(editButton, cloneButton, reportButton);
+            const historyButton = new ButtonBuilder()
+                .setLabel('編集履歴')
+                .setCustomId(`wiki_history_${page.uuid}`)
+                .setStyle(ButtonStyle.Secondary);
+            const row = new ActionRowBuilder().addComponents(editButton, cloneButton, reportButton, historyButton);
 
             return await interaction.update({ embeds: [interaction.message.embeds[0], embed], components: [row] });
         } else if (args[0] === "edit") {
@@ -202,6 +206,43 @@ module.exports = {
             const firstActionRow = new ActionRowBuilder().addComponents(reason);
             modal.addComponents(firstActionRow);
             return await interaction.showModal(modal);
+        } else if (args[0] === "history") {
+            const uuid = args[1]?.trim();
+            const page = db.prepare('SELECT * FROM wiki WHERE uuid = ?').get(uuid);
+            if (!page) return await interaction.reply({ content: "ページが見つかりませんでした。", ephemeral: true });
+
+            const branchArray = page.branch ? JSON.parse(page.branch) : [];
+            if (branchArray.length === 0) {
+                return await interaction.reply({ content: "このページに参照元のブランチがありません。", ephemeral: true });
+            }
+
+            const branchIds = [...new Set(branchArray)]
+                .filter(branchUuid => branchUuid !== page.uuid)
+                .slice(0, 25);
+
+            if (branchIds.length === 0) {
+                return await interaction.reply({ content: "参照元のページが存在しません（現在のページは除外されています）。", ephemeral: true });
+            }
+
+            const rows = db.prepare(`SELECT uuid, title FROM wiki WHERE uuid IN (${branchIds.map(() => '?').join(',')})`).all(...branchIds);
+            const titleMap = Object.fromEntries(rows.map(r => [r.uuid, r.title || '無題']));
+
+            const selectOptions = branchIds.map((branchUuid, index) => {
+                const title = titleMap[branchUuid] || '（タイトルなし）';
+                return {
+                    label: `${index + 1}. ${title.slice(0, 100)}`,
+                    description: branchUuid.slice(0, 50),
+                    value: branchUuid
+                };
+            });
+
+            const selectMenu = new StringSelectMenuBuilder()
+                .setCustomId(`wiki_branch_${page.uuid}`)
+                .setPlaceholder(`${selectOptions.length}件の参照元ページを選択`) 
+                .addOptions(selectOptions);
+
+            const row = new ActionRowBuilder().addComponents(selectMenu);
+            return await interaction.reply({ content: "参照元のブランチのページを選択してください。", components: [row], ephemeral: true });
         } else {
             return await interaction.reply({ content: "不明な操作です。", ephemeral: true });
         }
