@@ -28,7 +28,7 @@ function getHammingDistance(h1, h2) {
 
 module.exports = {
     name: 'checkspam',
-    aliases: ['spamcheck', 'spam'],
+    aliases: ['spamcheck', 'sc'],
     adminOnly: true,
     description: '添付画像がスパムフィルターに引っかかるか調べる',
 
