@@ -3,7 +3,7 @@
 module.exports = {
     name: 'lock',
     adminOnly: true,
-    description: 'チャンネルをロックします',
+    description: 'スレッドをロックします',
 
     async execute(client, message) {
         if (message.channel.isThread()) {

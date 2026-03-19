@@ -92,7 +92,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor(0x0099FF)
                 .setTitle(page.title)
-                .setDescription(`編集者: <@${page.authorId}>\n最終更新: <t:${Math.floor(new Date(page.updatedAt).getTime() / 1000)}:f>\nuuid: ${page.uuid}`);
+                .setDescription(`編集者: <@${page.authorId}>\n最終更新: <t:${page.updatedAt}:f>\nuuid: ${page.uuid}`);
 
             const editButton = new ButtonBuilder()
                 .setLabel('編集')

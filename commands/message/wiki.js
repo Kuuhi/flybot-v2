@@ -22,11 +22,7 @@ module.exports = {
 
             const embed = new EmbedBuilder()
                 .setColor(0x0099FF)
-                .setDescription(`
-                    準備中
-
-                    現在: ${count}件のページがあります。
-                    `);
+                .setDescription(`準備中\n\n現在: ${count}件のページがあります。`);
 
             const search = new ButtonBuilder()
                 .setCustomId('wiki_search')
@@ -50,7 +46,6 @@ module.exports = {
                 .setCustomId('wiki_create')
                 .setLabel('ページを作成')
                 .setStyle(ButtonStyle.Primary);
-
             const row = new ActionRowBuilder().addComponents(button);
 
             return await message.channel.send({ components: [row] });
